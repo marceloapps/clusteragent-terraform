@@ -1,0 +1,47 @@
+deploymentMode: NAMESPACED
+
+#Cluster Agent image info
+imageInfo:
+  agentImage: docker.io/appdynamics/cluster-agent
+  agentTag: 20.7.0
+  operatorImage: docker.io/appdynamics/cluster-agent-operator
+  operatorTag: latest
+  imagePullPolicy: Always 
+
+# AppDynamics controller info
+controllerInfo:
+  url: https://apm-foobar.pl.appdynamics.com:443
+  account: itau-dev                   
+  username: FOO
+  password: BAR
+  accessKey: FOO123BAR456
+
+# Cluster agent config
+clusterAgent:
+  nsToMonitor: [default,iks,kube-node-lease,kube-public,kube-system,appdynamics]
+
+# instrumentationConfig:
+#   enabled: true
+#   instrumentationMethod: Env
+#   nsToInstrumentRegex: ecom|books|groceries
+#   defaultAppName: Ecommerce
+#   appNameStrategy: namespace
+#   imageInfo:
+#     java:
+#       image: "docker.io/appdynamics/java-agent:latest"
+#       agentMountPath: /opt/appdynamics
+#       imagePullPolicy: IfNotPresent
+#   instrumentationRules:
+#     - namespaceRegex: groceries
+#       language: dotnetcore
+#       imageInfo:
+#         image: "docker.io/appdynamics/dotnet-core-agent:latest"
+#         agentMountPath: /opt/appdynamics
+#         imagePullPolicy: IfNotPresent
+#     - namespaceRegex: books
+#       matchString: openmct
+#       language: nodejs
+#       imageInfo:
+#         image: "docker.io/appdynamics/nodejs-agent:20.5.0-alpinev10"
+#         agentMountPath: /opt/appdynamics
+#         imagePullPolicy: IfNotPresent
