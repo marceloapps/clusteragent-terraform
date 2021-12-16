@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adot-trace
+  namespace: opentelemetry
+spec:
+  selector:
+    matchLabels:
+      app: sample
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sample
+    spec:
+      containers:
+        - name: aws-otel-emitter
+          image: "aottestbed/aws-otel-collector-sample-app:java-0.1.0"
+          env:
+          - name: APPLICATION_NAME
+            value: "AWSObservability"
+          - name: OTEL_TRACES_EXPORTER
+            value: "jaeger"
+          - name: OTEL_EXPORTER_JAEGER_ENDPOINT
+            value: "http://localhost:14250"
+          - name: OTEL_EXPORTER_JAEGER_TIMEOUT
+            value: "20000"
+          - name: OTEL_PROPAGATORS
+            value: "jaeger"
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - mountPath: /opt/observability/otel-javaagent
+              name: otel-javaagent
+          command:
+            - "-javaagent:/opt/observability/otel-javaagent/opentelemetry-javaagent.jar"
+          resources:
+            limits:
+              cpu: 256m
+              memory: 512Mi
+      volumes:
+        - name: otel-javaagent
+          hostPath: 
+            path: /home/otel-javaagent
+            type: Directory
