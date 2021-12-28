@@ -1,5 +1,4 @@
 nameOverride: "test"
-fullnameOverride: "test"
 
 deploymentMode: PRIMARY
 
