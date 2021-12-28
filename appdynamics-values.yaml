@@ -1,12 +1,18 @@
-deploymentMode: NAMESPACED
+nameOverride: "test"
+fullnameOverride: "test"
+
+deploymentMode: PRIMARY
 
 #Cluster Agent image info
 imageInfo:
   agentImage: docker.io/appdynamics/cluster-agent
-  agentTag: 20.7.0
+  agentTag: 20.9.0
   operatorImage: docker.io/appdynamics/cluster-agent-operator
   operatorTag: latest
-  imagePullPolicy: Always 
+  imagePullPolicy: IfNotPresent
+  machineAgentImage: docker.io/appdynamics/machine-agent-analytics
+  machineAgentTag: 21.9.0
+  machineAgentWinTag: 21.9.0-win-ltsc2019  
 
 # AppDynamics controller info
 controllerInfo:
@@ -18,7 +24,29 @@ controllerInfo:
 
 # Cluster agent config
 clusterAgent:
-  nsToMonitor: [default,iks,kube-node-lease,kube-public,kube-system,appdynamics]
+  appName: "xpto"
+  nsToMonitor: [default,kube-node-lease,kube-public,kube-system,appdynamics]
+  clusterMetricsSyncInterval: 60
+  metadataSyncInterval: 60
+  eventUploadInterval: 10
+  httpClientTimeout: 30
+  podBatchSize: 6
+  imagePullSecret: ""
+  containerProperties:
+    containerBatchSize: 5
+    containerParallelRequestLimit: 1
+    containerRegistrationInterval: 120
+  logProperties:
+    logFileSizeMb: 5
+    logFileBackups: 3
+    logLevel: INFO
+  metricProperties:
+    metricsSyncInterval: 30
+    metricUploadRetryCount: 2
+    metricUploadRetryIntervalMilliSeconds: 5
+
+install:
+  metrics-server: true    
 
 # instrumentationConfig:
 #   enabled: true
